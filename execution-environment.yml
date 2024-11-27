@@ -65,6 +65,9 @@ dependencies:
 additional_build_steps:
   append_base:
     - RUN $PYCMD -m pip install -U pip
+    # https://stackoverflow.com/questions/63994247/how-to-install-kubectl-and-helm-using-dockerfile
+    - RUN curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x ./kubectl && mv ./kubectl /usr/local/bin/kubectl
+    - RUN curl -LO https://get.helm.sh/helm-v3.16.3-linux-amd64.tar.gz && tar xvf helm-v3.16.3-linux-amd64.tar.gz && mv ./linux-amd64/helm /usr/local/bin/helm
   append_final:
     - COPY --from=quay.io/ansible/receptor:devel /usr/bin/receptor /usr/bin/receptor
     - RUN mkdir -p /var/run/receptor
